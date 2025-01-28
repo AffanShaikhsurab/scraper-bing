@@ -1,0 +1,177 @@
+# Scrape Bing
+
+A robust Python package for scraping search results from Bing with built-in rate limiting, retry mechanisms, and result cleaning features.
+
+## Features
+
+- 🔍 Clean and structured search results
+- 🔄 Automatic retry mechanism for failed requests
+- ⏱️ Built-in rate limiting to prevent blocking
+- 🧹 URL cleaning and validation
+- 🔄 User agent rotation
+- 💪 Type hints and proper error handling
+- 📝 Comprehensive documentation
+
+## Installation
+
+You can install the package using pip:
+
+```bash
+pip install scrape-bing
+```
+
+For development installation:
+
+```bash
+git clone https://github.com/affanshaikhsurab/scrape-bing.git
+cd scrape-bing
+pip install -e .
+```
+
+## Quick Start
+
+```python
+from scrape-bing import BingScraper
+
+# Initialize the searcher
+scraper= BingScraper(
+    max_retries=3,
+    delay_between_requests=1.0
+)
+
+# Perform a search
+results = scraper.search("python programming", num_results=5)
+
+# Process results
+for result in results:
+    print(f"\nTitle: {result.title}")
+    print(f"URL: {result.url}")
+    print(f"Description: {result.description}")
+```
+
+## Advanced Usage
+
+### Custom Configuration
+
+```python
+# Configure with custom parameters
+scraper = BingScraper(
+    max_retries=5,                # Maximum retry attempts
+    delay_between_requests=2.0    # Delay between requests in seconds
+)
+```
+
+### Error Handling
+
+```python
+from scrape-bing import BingScraper
+
+scraper = BingScraper()
+
+try:
+    results = scraper.search("python programming")
+  
+except ValueError as e:
+    print(f"Invalid input: {e}")
+  
+except ConnectionError as e:
+    print(f"Network error: {e}")
+  
+except RuntimeError as e:
+    print(f"Parsing error: {e}")
+```
+
+### Search Result Structure
+
+Each search result contains:
+
+- `title`: The title of the search result
+- `url`: The cleaned and validated URL
+- `description`: The description snippet (if available)
+
+```python
+# Access result attributes
+for result in results:
+    print(result.title)       # Title of the page
+    print(result.url)         # Clean URL
+    print(result.description) # Description (may be None)
+```
+
+## API Reference
+
+### BingSearch Class
+
+```python
+class BingScraper:
+    def __init__(self, max_retries: int = 3, delay_between_requests: float = 1.0):
+        """
+        Initialize the BingSearch scraper.
+  
+        Args:
+            max_retries: Maximum number of retry attempts for failed requests
+            delay_between_requests: Minimum delay between requests in seconds
+        """
+        pass
+
+    def search(self, query: str, num_results: int = 10) -> List[SearchResult]:
+        """
+        Perform a Bing search and return results.
+  
+        Args:
+            query: Search query string
+            num_results: Maximum number of results to return
+  
+        Returns:
+            List of SearchResult objects
+  
+        Raises:
+            ValueError: If query is empty
+            ConnectionError: If network connection fails
+            RuntimeError: If parsing fails
+        """
+        pass
+```
+
+### SearchResult Class
+
+```python
+@dataclass
+class SearchResult:
+    title: str                    # Title of the search result
+    url: str                      # Cleaned URL
+    description: Optional[str]     # Description (may be None)
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## Running Tests
+
+```bash
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Run tests
+python -m pytest tests/
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Beautiful Soup 4 for HTML parsing
+- Requests library for HTTP requests
+- Python typing for type hints
+
+## Support
+
+If you encounter any issues or have questions, please file an issue on the GitHub repository.
